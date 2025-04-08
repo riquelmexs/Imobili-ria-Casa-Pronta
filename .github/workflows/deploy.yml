@@ -1,33 +1,32 @@
-name: Deploy React App to Azure
+name: Deploy React App to Azure Web App (Windows)
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
+      - name: Install dependencies and build
+        run: |
+          npm install
+          npm run build
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: imobiliaria-casa-pronta # <-- nome exato do seu App Service
+          app-name: Casa-Pronta
           slot-name: production
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: ./build
