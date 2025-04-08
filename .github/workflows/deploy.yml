@@ -3,30 +3,31 @@ name: Deploy React App to Azure Web App (Windows)
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build
+      - name: Instalar dependências
+        run: npm install
 
-      - name: Deploy to Azure Web App
+      - name: Build do React
+        run: npm run build
+
+      - name: Deploy no Azure
         uses: azure/webapps-deploy@v2
         with:
-          app-name: Casa-Pronta
+          app-name: Casa-Pronta # NOME EXATO do seu App Service no Azure
           slot-name: production
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
           package: ./build
